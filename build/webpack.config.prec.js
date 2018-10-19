@@ -1,18 +1,15 @@
 const merge = require('webpack-merge')
+const path = require('path')
 const HtmlWebPackPlugin = require('html-webpack-plugin') //  html模板
 const webpack = require('webpack')
 
 const baseConfig = require('./webpack.config.base')
 
 const devServer = {
-  port: 8000,
+  port: 8080,
   host: '127.0.0.1',
   overlay: {
-    errors: true,
-  },
-  headers: { 'Access-Control-Allow-Origin': '*' },
-  historyApiFallback: {
-    index: '/dist/index.html'
+    errors: true
   },
   open: true, // 启动webpack时自动打开页面
   hot: true // 热更新
@@ -20,6 +17,7 @@ const devServer = {
 
 let config = merge(baseConfig, {
   mode: 'development',
+  entry: path.join(__dirname, '../prec/index.js'),
   devtool: '#cheap-module-eval-source-map',
   module: {
     rules: [
@@ -30,7 +28,7 @@ let config = merge(baseConfig, {
         exclude: /node_modules/,
         options: {
           fix: true, // 启用自动修复
-          emitWarning: true,    // 启用警告信息,
+          emitWarning: true // 启用警告信息
           // formatter: require("eslint/lib/formatters/stylish"), // 格式化
           // failOnWarning:true, // 如果错误则构建失败
         }
@@ -41,14 +39,19 @@ let config = merge(baseConfig, {
           'vue-style-loader',
           'css-loader',
           'postcss-loader',
-          'sass-loader',
-        ],
+          'sass-loader'
+        ]
       }
     ]
   },
   devServer: devServer,
   optimization: {
-    noEmitOnErrors: true  // 报错处理
+    noEmitOnErrors: true // 报错处理
+  },
+  resolve: {
+    alias: {
+      'vue': path.join(__dirname, '../node_modules/vue/dist/vue.esm.js'),
+    }
   },
   plugins: [
     new webpack.DefinePlugin({// 定义环境变量
@@ -56,13 +59,10 @@ let config = merge(baseConfig, {
 
     }),
     new HtmlWebPackPlugin({
-      filename: 'index.html',
-      template: 'index.html',
-      inject: true
-    }
-    ),
+      template: path.join(__dirname, './temp.html')
+    }),
     new webpack.HotModuleReplacementPlugin() // 热更新模块
   ]
 })
 
-module.exports = config;
+module.exports = config

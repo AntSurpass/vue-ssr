@@ -1,17 +1,16 @@
 const merge = require('webpack-merge')
-const MiniCssExtractPlugin = require("mini-css-extract-plugin"); //css 提取
+const MiniCssExtractPlugin = require("mini-css-extract-plugin") // css 提取
 const HtmlWebPackPlugin = require('html-webpack-plugin') //  html模板
 const webpack = require('webpack')
 const baseConfig = require('./webpack.config.base')
 
-
-const isdev = process.env.NODE_ENV === 'development';
-
+const isdev = process.env.NODE_ENV === 'development'
 
 let config = merge(baseConfig, {
   mode: 'production',
   output: {
     filename: '[name].[chunkhash].js',
+    publicPath: '/dist/'
   },
   module: {
     rules: [
@@ -52,7 +51,7 @@ let config = merge(baseConfig, {
   plugins: [
     new webpack.DefinePlugin({
       'process.env': '"production"'
-      
+
     }),
     new HtmlWebPackPlugin(),
     new MiniCssExtractPlugin({ // css单独打包

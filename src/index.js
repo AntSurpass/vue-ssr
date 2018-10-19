@@ -1,18 +1,16 @@
 import Vue from 'vue'
+import VueRouter from 'vue-router'
+import creatRouter from './routers/router'
 import App from './App.vue'
 
 import './assets/a.jpg'
 import './style/index.scss'
 
-const root = document.createElement('div')
+const router = creatRouter()
 
-document.body.appendChild(root)
-
-Vue.component('todo-item', {
-  props: ['todo'],
-  template: '<li>{{ todo.text }}</li>'
-})
+Vue.use(VueRouter)
 
 new Vue({
+  router,
   render: (h) => h(App)
-}).$mount(root)
+}).$mount('#app')

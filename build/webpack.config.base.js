@@ -1,12 +1,13 @@
-const path = require('path');
+const path = require('path')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const VueLoaderConfig = require('./vueloader.config')
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin')
+const VueSSRClientPlugin = require('vue-server-renderer/client-plugin')
 
-const isdev = process.env.NODE_ENV === 'development';
+const isdev = process.env.NODE_ENV === 'development'
 
-config = {
-  entry: path.join(__dirname, '../src/index.js'),
+const config = {
+  entry: path.join(__dirname, '../src/client-entry.js'),
   output: {
     filename: '[name].[hash:8].js',
     path: path.join(__dirname, '../dist')
@@ -40,8 +41,10 @@ config = {
       root: path.resolve(__dirname, '..'),
       verbose: true, //开启在控制台输出信息
       dry: false,
+      watch: true
     }),
-    new VueLoaderPlugin()
+    new VueLoaderPlugin(),
+    new VueSSRClientPlugin()
   ]
 }
 
